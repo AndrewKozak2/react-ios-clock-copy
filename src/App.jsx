@@ -1,12 +1,13 @@
 import { useState } from "react";
 import Stopwatch from "./components/Stopwatch";
+import Timer from "./components/Timer";
 import "./App.css";
 
 function App() {
   const [activeTab, setActiveTab] = useState("stopwatch");
 
   return (
-    <div className="app-container">
+    <div className="main-layout">
       {/* Навігація */}
       <div className="tab-navigation">
         <button
@@ -26,11 +27,7 @@ function App() {
       {/* Умовний рендеринг */}
       <div className="content-area">
         {activeTab === "stopwatch" && <Stopwatch />}
-        {activeTab === "timer" && (
-          <div style={{ color: "white", marginTop: "50px" }}>
-            Тут буде Таймер
-          </div>
-        )}
+        {activeTab === "timer" && <Timer />}
       </div>
     </div>
   );
