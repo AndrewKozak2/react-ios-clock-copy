@@ -9,19 +9,21 @@ function App() {
   return (
     <div className="main-layout">
       {/* Навігація */}
-      <div className="tab-navigation">
-        <button
-          className={activeTab === "stopwatch" ? "tab active" : "tab"}
-          onClick={() => setActiveTab("stopwatch")}
-        >
-          Секундомір
-        </button>
-        <button
-          className={activeTab === "timer" ? "tab active" : "tab"}
-          onClick={() => setActiveTab("timer")}
-        >
-          Таймер
-        </button>
+      <div className="app-header">
+        <div className="tab-navigation">
+          <button
+            className={activeTab === "stopwatch" ? "tab active" : "tab"}
+            onClick={() => setActiveTab("stopwatch")}
+          >
+            Секундомір
+          </button>
+          <button
+            className={activeTab === "timer" ? "tab active" : "tab"}
+            onClick={() => setActiveTab("timer")}
+          >
+            Таймери
+          </button>
+        </div>
       </div>
 
       {/* Умовний рендеринг */}

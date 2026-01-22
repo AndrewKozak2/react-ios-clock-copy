@@ -47,6 +47,13 @@ export default function Stopwatch() {
   function handleLap() {
     setLaps([...laps, time]);
   }
+  const lapDurations = laps.map((totalTime, index) => {
+    const prevTotalTime = laps[index - 1] || 0;
+    return totalTime - prevTotalTime;
+  });
+
+  const minDuration = Math.min(...lapDurations);
+  const maxDuration = Math.max(...lapDurations);
 
   return (
     <div className="app-container">
@@ -71,8 +78,14 @@ export default function Stopwatch() {
             const prevTotalTime = laps[realIndex - 2] || 0;
             const lapDuration = totalTime - prevTotalTime;
 
+            let colorClass = "";
+            if (laps.length >= 2) {
+              if (lapDuration === minDuration) colorClass = "text-green";
+              else if (lapDuration === maxDuration) colorClass = "text-red";
+            }
+
             return (
-              <div key={realIndex} className="lap-item">
+              <div key={realIndex} className={`lap-item ${colorClass}`}>
                 <span>Коло {realIndex}</span>
                 <span>{formattedTime(lapDuration)}</span>
                 <span>{formattedTime(totalTime)}</span>

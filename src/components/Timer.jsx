@@ -129,7 +129,7 @@ function Timer() {
         <div className="radius-select">
           <span>Радіус (типовий)</span>
           <div className="select-arrow">
-            <svg viewBox="0 0 24 24" width="12" height="12">
+            <svg viewBox="0 0 24 24" width="24" height="24">
               <path d="M7 14l5 5 5-5H7z" />
               <path d="M7 10l5-5 5 5H7z" />
             </svg>

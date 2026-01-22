@@ -3,30 +3,32 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 20px;
 }
 
 .timer-section {
   flex: 0 0 auto;
-  padding: 40px 0;
   text-align: center;
 }
 
 .timer-display {
-  font-size: 5rem;
+  font-size: 6.5rem;
   font-weight: 200;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 2px;
 }
 
 .laps-container {
-  flex: 1 1 auto;
+  flex: 1 1 0px;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  margin-bottom: 20px;
+  margin: 20px 0 60px 0;
+  width: 100%;
+  max-width: 350px;
+  align-self: center;
 }
 
 .laps-header {
@@ -41,15 +43,16 @@
 
 .laps-list {
   overflow-y: auto;
-  flex-grow: 1;
+  flex: 1;
+  scrollbar-width: thin;
 }
 
 .lap-item {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  padding: 12px 20px;
+  padding: 7px 20px;
   border-bottom: 1px solid #2a2a2a;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
 }
 
@@ -59,7 +62,10 @@
 }
 
 .laps-header span:nth-child(2),
-.lap-item span:nth-child(2),
+.lap-item span:nth-child(2) {
+  text-align: center;
+}
+
 .laps-header span:last-child,
 .lap-item span:last-child {
   text-align: right;
@@ -108,4 +114,12 @@ button:disabled {
   color: #555;
   cursor: default;
   opacity: 1;
+}
+
+.text-green {
+  color: #30d158;
+}
+
+.text-red {
+  color: #ff453a;
 }
