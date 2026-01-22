@@ -1,0 +1,231 @@
+.timer-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timer-setup-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 15vh;
+}
+
+.inputs-header {
+  display: flex;
+  justify-content: space-between;
+  width: 340px;
+  padding: 0 45px;
+  margin-bottom: 2px;
+  font-size: 13px;
+  color: #9e9e9e;
+  font-weight: 500;
+}
+.inputs-header span {
+  flex: 1;
+  text-align: center;
+}
+
+.timer-display-card {
+  background-color: #262626;
+  border-radius: 12px;
+  padding: 0 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #333;
+  height: 110px;
+}
+
+.inputs-row {
+  display: flex;
+  align-items: center;
+}
+
+.inputs-row input {
+  font-size: 5.5rem;
+  font-weight: 200;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  text-align: center;
+  width: 100px;
+  height: 90px;
+  padding: 0;
+  margin: 0 2px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-variant-numeric: tabular-nums;
+  border-radius: 6px;
+  caret-color: transparent;
+  transition: background-color 0.1s;
+}
+
+.inputs-row input:focus {
+  background-color: #a36a00;
+  color: #ffffff;
+}
+
+.inputs-row input::selection {
+  background: transparent;
+}
+
+.inputs-row input::placeholder {
+  color: #3a3a3c;
+}
+
+.inputs-row .separator {
+  font-size: 4rem;
+  font-weight: 200;
+  color: #6e6e6e;
+  margin-top: -8px;
+  width: 10px;
+  text-align: center;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.timer-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.label-row {
+  background-color: #262626;
+  width: 320px;
+  height: 28px;
+  border-radius: 5px;
+  border: 1px solid #333;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.timer-name-input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #c0c0c0;
+  font-size: 13px;
+  padding-left: 10px;
+}
+.timer-name-input::placeholder {
+  color: #c0c0c0;
+}
+
+.radius-select {
+  width: 100%;
+  padding: 0 4px 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #c0c0c0;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.select-arrow {
+  background-color: #ff9f0a;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.select-arrow svg {
+  fill: black;
+  transform: scale(0.7);
+}
+
+.timer-controls-bottom {
+  display: flex;
+  gap: 15px;
+  margin-top: 60px;
+}
+
+.timer-controls-bottom button {
+  height: 28px;
+  width: 130px;
+  border-radius: 5px;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+.timer-controls-bottom button:active {
+  opacity: 0.7;
+}
+
+.btn-secondary {
+  background-color: #3f3f3f;
+  color: #e0e0e0;
+  border-top: 1px solid #4a4a4a;
+}
+.btn-primary.start {
+  background-color: #58ae58;
+  color: #ffffff;
+  border-top: 1px solid #6dc56d;
+}
+.btn-warning {
+  background-color: #dfa638;
+  color: #fff;
+  border-top: 1px solid #ecc26d;
+}
+.btn-success {
+  background-color: #58ae58;
+  color: #fff;
+  border-top: 1px solid #6dc56d;
+}
+
+.timer-running-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+  margin-top: -5vh;
+}
+
+.timer-circle-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.timer-text-overlay {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timer-display-big {
+  font-size: 5.5rem;
+  font-weight: 200;
+  margin: 0;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 25px;
+}
+.bell-time {
+  color: #9e9e9e;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
