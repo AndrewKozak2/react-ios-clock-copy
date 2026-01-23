@@ -15,19 +15,42 @@ function formatTime(milliseconds) {
 }
 
 function Timer() {
-  const [time, setTime] = useState({
-    hours: "00",
-    minutes: "00",
-    seconds: "00",
+  const [time, setTime] = useState(() => {
+    const savedTime = localStorage.getItem("timer_input_time");
+    if (savedTime !== null) {
+      return JSON.parse(savedTime);
+    }
+    return { hours: "00", minutes: "00", seconds: "00" };
   });
-  const [timerName, setTimerName] = useState("");
+
+  const [timerName, setTimerName] = useState(() => {
+    const savedTimer = localStorage.getItem("timer_input_name");
+    if (savedTimer !== null) {
+      return JSON.parse(savedTimer);
+    }
+    return "";
+  });
   const [status, setStatus] = useState("input");
   const [timeLeft, setTimeLeft] = useState(0);
   const [initialTime, setInitialTime] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  const endTimeRef = useRef(null);
+  const endTimeRef = useState(() => {
+    const savedEndTime = localStorage.getItem("timer_endTime");
+    if (savedEndTime !== null) {
+      return JSON.parse(savedEndTime);
+    }
+    return null;
+  });
   const idRef = useRef(null);
+
+  useEffect(() => {
+    localStorage.setItem("timer_input_time", JSON.stringify(time));
+  }, [time]);
+
+  useEffect(() => {
+    localStorage.setItem("timer_input_name", JSON.stringify(timerName));
+  }, [timerName]);
 
   useEffect(() => {
     return () => clearInterval(idRef.current);
