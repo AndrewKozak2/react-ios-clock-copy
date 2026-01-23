@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./Stopwatch.css";
 
 function formattedTime(time) {
@@ -14,9 +14,61 @@ function formattedTime(time) {
 }
 
 export default function Stopwatch() {
-  const [time, setTime] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const [laps, setLaps] = useState([]);
+  const [time, setTime] = useState(() => {
+    const savedTime = localStorage.getItem("stopwatch_time");
+    if (savedTime !== null) {
+      return JSON.parse(savedTime);
+    }
+    return 0;
+  });
+  const [isRunning, setIsRunning] = useState(() => {
+    const savedIsRunning = localStorage.getItem("stopwatch_running");
+    if (savedIsRunning !== null) {
+      return JSON.parse(savedIsRunning);
+    }
+    return false;
+  });
+  const [laps, setLaps] = useState(() => {
+    const saved = localStorage.getItem("stopwatch_laps");
+    if (saved !== null) {
+      return JSON.parse(saved);
+    }
+    return [];
+  });
+
+  const [startTime, setStartTime] = useState(() => {
+    const savedStartTime = localStorage.getItem("stopwatch_start_time");
+    if (savedStartTime !== null) {
+      return JSON.parse(savedStartTime);
+    }
+    return 0;
+  });
+
+  useEffect(() => {
+    if (isRunning === true) {
+      startTimeRef.current = startTime;
+      idRef.current = setInterval(() => {
+        setTime(Date.now() - startTimeRef.current);
+      }, 10);
+    }
+    return () => clearInterval(idRef.current);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("stopwatch_laps", JSON.stringify(laps));
+  }, [laps]);
+
+  useEffect(() => {
+    localStorage.setItem("stopwatch_time", JSON.stringify(time));
+  }, [time]);
+
+  useEffect(() => {
+    localStorage.setItem("stopwatch_running", JSON.stringify(isRunning));
+  }, [isRunning]);
+
+  useEffect(() => {
+    localStorage.setItem("stopwatch_start_time", JSON.stringify(startTime));
+  }, [startTime]);
 
   const idRef = useRef(null);
   const startTimeRef = useRef(0);
@@ -25,7 +77,7 @@ export default function Stopwatch() {
     if (isRunning) return;
     setIsRunning(true);
     startTimeRef.current = Date.now() - time;
-
+    setStartTime(startTimeRef.current);
     idRef.current = setInterval(() => {
       setTime(Date.now() - startTimeRef.current);
     }, 10);
@@ -42,6 +94,7 @@ export default function Stopwatch() {
     clearInterval(idRef.current);
     setTime(0);
     setLaps([]);
+    setStartTime(0);
   }
 
   function handleLap() {
