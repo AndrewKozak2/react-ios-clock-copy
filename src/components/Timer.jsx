@@ -113,6 +113,19 @@ function Timer() {
         audioRef.current
           .play()
           .catch((e) => console.log("Audio play failed:", e));
+        if (Notification.permission === "granted") {
+          const myAlert = new Notification("Час вийшов!", {
+            body: "Натисніть сюди, щоб вимкнути таймер",
+            icon: "/clock-icon.webp",
+            requireInteraction: true,
+          });
+          myAlert.onclick = () => {
+            window.focus();
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+            myAlert.close();
+          };
+        }
       } else {
         setTimeLeft(remaining);
       }
@@ -120,6 +133,12 @@ function Timer() {
   }
 
   function handleStart() {
+    if (Notification.permission === "default") {
+      Notification.requestPermission().then((result) => {
+        console.log("Дозвіл на сповіщення:", result);
+      });
+    }
+
     const hrs = parseInt(time.hours || 0) * 3600 * 1000;
     const mins = parseInt(time.minutes || 0) * 60 * 1000;
     const secs = parseInt(time.seconds || 0) * 1000;
