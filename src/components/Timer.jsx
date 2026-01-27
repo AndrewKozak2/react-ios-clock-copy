@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
+import radialSound from "../assets/Radial.mp3";
 import "./Timer.css";
 
 function formatTime(milliseconds) {
@@ -54,6 +55,13 @@ function Timer() {
   const [isPaused, setIsPaused] = useLocalStorage("timer_isPaused", false);
   const [endTime, setEndTime] = useLocalStorage("timer_endTime", null);
   const idRef = useRef(null);
+
+  const audioRef = useRef(new Audio(radialSound));
+
+  useEffect(() => {
+    audioRef.current.loop = true;
+  }, []);
+
   useEffect(() => {
     return () => clearInterval(idRef.current);
   }, []);
@@ -101,8 +109,10 @@ function Timer() {
         setTimeLeft(0);
         setStatus("input");
         setIsPaused(false);
-        alert("Час вийшов!");
         setEndTime(null);
+        audioRef.current
+          .play()
+          .catch((e) => console.log("Audio play failed:", e));
       } else {
         setTimeLeft(remaining);
       }
@@ -134,6 +144,8 @@ function Timer() {
     setTimeLeft(0);
     setInitialTime(0);
     setEndTime(null);
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
   }
 
   function handlePause() {
