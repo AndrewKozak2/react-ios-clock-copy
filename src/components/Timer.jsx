@@ -15,6 +15,32 @@ function formatTime(milliseconds) {
   return `${fHours}:${fMinutes}:${fSeconds}`;
 }
 
+const TimerLabels = ({ name, setName }) => (
+  <div className="timer-labels">
+    <div className="label-row">
+      <input
+        type="text"
+        className="timer-name-input"
+        placeholder="Таймер"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+    </div>
+
+    <div className="label-row">
+      <div className="radius-select">
+        <span>Радіус (типовий)</span>
+        <div className="select-arrow">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path d="M7 14l5 5 5-5H7z" />
+            <path d="M7 10l5-5 5 5H7z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 function Timer() {
   const [status, setStatus] = useLocalStorage("timer_status", "input");
   const [time, setTime] = useLocalStorage("timer_input_time", {
@@ -133,32 +159,6 @@ function Timer() {
     minute: "2-digit",
   });
 
-  const TimerLabels = () => (
-    <div className="timer-labels">
-      <div className="label-row">
-        <input
-          type="text"
-          className="timer-name-input"
-          placeholder="Таймер"
-          value={timerName}
-          onChange={(e) => setTimerName(e.target.value)}
-        />
-      </div>
-
-      <div className="label-row">
-        <div className="radius-select">
-          <span>Радіус (типовий)</span>
-          <div className="select-arrow">
-            <svg viewBox="0 0 24 24" width="24" height="24">
-              <path d="M7 14l5 5 5-5H7z" />
-              <path d="M7 10l5-5 5 5H7z" />
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div className="timer-container">
       {status === "input" && (
@@ -199,7 +199,7 @@ function Timer() {
             </div>
           </div>
 
-          <TimerLabels />
+          <TimerLabels name={timerName} setName={setTimerName} />
 
           <div className="timer-controls-bottom">
             <button className="btn-secondary" onClick={() => {}}>
@@ -243,7 +243,7 @@ function Timer() {
                 <span>🔔</span> {timeString}
               </div>
               <h1 className="timer-display-big">{formatTime(timeLeft)}</h1>
-              <TimerLabels />
+              <TimerLabels name={timerName} setName={setTimerName} />
             </div>
           </div>
 
