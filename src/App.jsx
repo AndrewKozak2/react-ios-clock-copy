@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Stopwatch from "./components/Stopwatch";
 import Timer from "./components/Timer";
 import "./App.css";
 
 function App() {
-  const [activeTab, setActiveTab] = useState("stopwatch");
+  const [activeTab, setActiveTab] = useState(() => {
+    const savedTab = localStorage.getItem("activeTab");
+    return savedTab ? savedTab : "stopwatch";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("activeTab", activeTab);
+  }, [activeTab]);
 
   return (
     <div className="main-layout">
-      {/* Навігація */}
       <div className="app-header">
         <div className="tab-navigation">
           <button
@@ -26,7 +32,6 @@ function App() {
         </div>
       </div>
 
-      {/* Умовний рендеринг */}
       <div className="content-area">
         {activeTab === "stopwatch" && <Stopwatch />}
         {activeTab === "timer" && <Timer />}

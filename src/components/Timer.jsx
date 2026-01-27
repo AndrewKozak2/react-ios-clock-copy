@@ -30,12 +30,30 @@ function Timer() {
     }
     return "";
   });
-  const [status, setStatus] = useState("input");
-  const [timeLeft, setTimeLeft] = useState(0);
-  const [initialTime, setInitialTime] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [status, setStatus] = useState(() => {
+    const savedStatus = localStorage.getItem("timer_status");
+    if (savedStatus !== null) {
+      return JSON.parse(savedStatus);
+    }
+    return "input";
+  });
+  const [timeLeft, setTimeLeft] = useState(() => {
+    const saved = localStorage.getItem("timer_timeLeft");
+    return saved !== null ? JSON.parse(saved) : 0;
+  });
+  const [initialTime, setInitialTime] = useState(() => {
+    const savedInitialTime = localStorage.getItem("timer_initialTime");
+    if (savedInitialTime !== null) {
+      return JSON.parse(savedInitialTime);
+    }
+    return 0;
+  });
+  const [isPaused, setIsPaused] = useState(() => {
+    const saved = localStorage.getItem("timer_isPaused");
+    return saved !== null ? JSON.parse(saved) : false;
+  });
 
-  const endTimeRef = useState(() => {
+  const [endTime, setEndTime] = useState(() => {
     const savedEndTime = localStorage.getItem("timer_endTime");
     if (savedEndTime !== null) {
       return JSON.parse(savedEndTime);
@@ -53,7 +71,42 @@ function Timer() {
   }, [timerName]);
 
   useEffect(() => {
+    localStorage.setItem("timer_endTime", JSON.stringify(endTime));
+  }, [endTime]);
+
+  useEffect(() => {
+    localStorage.setItem("timer_status", JSON.stringify(status));
+  }, [status]);
+
+  useEffect(() => {
+    localStorage.setItem("timer_initialTime", JSON.stringify(initialTime));
+  }, [initialTime]);
+
+  useEffect(() => {
+    localStorage.setItem("timer_timeLeft", JSON.stringify(timeLeft));
+  }, [timeLeft]);
+
+  useEffect(() => {
+    localStorage.setItem("timer_isPaused", JSON.stringify(isPaused));
+  }, [isPaused]);
+
+  useEffect(() => {
     return () => clearInterval(idRef.current);
+  }, []);
+
+  useEffect(() => {
+    if (status === "running" && !isPaused && endTime) {
+      const now = Date.now();
+      const delta = endTime - now;
+      if (delta > 0) {
+        setTimeLeft(delta);
+        startTimerInterval(endTime);
+      } else {
+        setStatus("input");
+        setEndTime(null);
+        setTimeLeft(0);
+      }
+    }
   }, []);
 
   function handleInputChange(e, field) {
@@ -75,16 +128,17 @@ function Timer() {
     e.target.select();
   };
 
-  function startTimerInterval() {
+  function startTimerInterval(targetTime) {
     clearInterval(idRef.current);
     idRef.current = setInterval(() => {
-      const remaining = endTimeRef.current - Date.now();
+      const remaining = targetTime - Date.now();
       if (remaining <= 0) {
         clearInterval(idRef.current);
         setTimeLeft(0);
         setStatus("input");
         setIsPaused(false);
         alert("Час вийшов!");
+        setEndTime(null);
       } else {
         setTimeLeft(remaining);
       }
@@ -99,13 +153,14 @@ function Timer() {
 
     if (totalDuration === 0) return;
 
+    const deadline = Date.now() + totalDuration;
+
     setInitialTime(totalDuration);
     setStatus("running");
     setIsPaused(false);
     setTimeLeft(totalDuration);
-
-    endTimeRef.current = Date.now() + totalDuration;
-    startTimerInterval();
+    setEndTime(deadline);
+    startTimerInterval(deadline);
   }
 
   function handleReset() {
@@ -121,8 +176,9 @@ function Timer() {
 
   function handleResume() {
     setIsPaused(false);
-    endTimeRef.current = Date.now() + timeLeft;
-    startTimerInterval();
+    const deadline = Date.now() + timeLeft;
+    setEndTime(deadline);
+    startTimerInterval(deadline);
   }
 
   const radius = 190;
@@ -238,7 +294,6 @@ function Timer() {
                 transform="rotate(-90 210 210)"
                 strokeDasharray={circumference}
                 strokeDashoffset={strokeDashoffset}
-                style={{ transition: "stroke-dashoffset 0.1s linear" }}
               />
             </svg>
 
