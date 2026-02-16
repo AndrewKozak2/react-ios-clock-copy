@@ -1,16 +1,36 @@
-# React + Vite
+# React Timer & Stopwatch
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Технічна реалізація таймера та секундоміра на React з фокусом на точність обчислень, роботу з Browser APIs та збереження стану.
 
-Currently, two official plugins are available:
+## Архітектурні рішення (Under the Hood)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Цей проект вирішує кілька типових проблем Frontend-розробки при роботі з часом та нативними API браузера:
 
-## React Compiler
+- **Усунення дрейфу Event Loop:** Стандартний `setInterval` у JavaScript не гарантує точної затримки через блокування основного потоку. Відлік часу реалізовано через обчислення дельти між цільовим часом (timestamp) та поточним `Date.now()`. Це гарантує точність навіть при "засинанні" вкладки браузера.
+- **Data Persistence (Кастомний хук):** Стан додатку (поточний час, кола секундоміра, статус) синхронізується з `localStorage` через кастомний хук `useLocalStorage`. Додаток повністю відновлює свою роботу після оновлення сторінки (F5) без втрати активного відліку.
+- **Інтеграція Web Audio API:** Звукові сповіщення реалізовані через об'єкт `new Audio()`, який зберігається у `useRef`. Це запобігає витокам пам'яті (memory leaks) та зайвому створенню об'єктів при ре-рендерах React. Враховано Autoplay Policy браузерів (використання `.catch()` для обробки блокувань).
+- **Notification API:** Системні сповіщення (Windows/macOS) інтегровано з урахуванням дозволів користувача (`requestPermission`). Повідомлення інтерактивні: клік по системному банеру фокусує вкладку браузера (`window.focus()`) та зупиняє відтворення звуку.
+- **SVG Animation:** Анімація кільця таймера побудована на декларативній зміні властивості `stroke-dashoffset` відносно довжини кола (`2 * Math.PI * r`). Це забезпечує плавний рендеринг без навантаження на DOM.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Стек технологій
 
-## Expanding the ESLint configuration
+- **Core:** React 18, Vite
+- **State Management:** React Hooks (`useState`, `useEffect`, `useRef`), Custom Hooks
+- **Browser APIs:** Web Audio API, Notification API, LocalStorage API
+- **Styling:** CSS3
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Запуск проекту локально
+
+```bash
+1. Клонувати репозиторій:
+
+   git clone https://github.com/AndrewKozak2/react-ios-clock-copy.git
+
+2. Встановити залежності:
+
+    npm install
+
+3. Запустити сервер розробки:
+
+    npm run dev
+```
